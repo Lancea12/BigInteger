@@ -327,6 +327,23 @@
     return createBigInteger(resultSign, result, resultLength, result[0]);
   };
 
+  BigIntegerInternal.prototype.pow = function (b) {
+    var a = BigIntegerInternal.fromNumber(1);
+    for(var i = 0; i < b; i++){
+      a = a.multiply(this);
+    }
+    return a;
+  };
+
+  BigIntegerInternal.prototype.log = function (b) {
+    var a = createBigInteger(this.sign, this.magnitude, this.length, this.value);
+    for(var i = 0; BigInteger.compareTo(a, b) > 0; i++){
+      a = BigInteger.divide(a, b);
+    }
+    var log = i + Math.log(a, b);
+    return log;
+  };
+
   BigIntegerInternal.prototype.divideAndRemainder = function (b, isDivision) {
     var a = this;
     if (b.length === 0) {
@@ -605,6 +622,18 @@
     var b = valueOf(y);
     return toResult(a.multiply(b));
   };
+  var pow = function (x, y) {
+    try {} catch (e) {}
+    var a = valueOf(x);
+    var b = valueOf(y);
+    return toResult(a.pow(b));
+  };
+  var log = function (x, y) {
+    try {} catch (e) {}
+    var a = valueOf(x);
+    var b = valueOf(y);
+    return a.log(b);
+  };
   var divide = function (x, y) {
     try {} catch (e) {}
     var a = valueOf(x);
@@ -666,6 +695,24 @@
       }
     }
     return multiply(x, y);
+  };
+  BigInteger.pow = function (x, y) {
+    if (typeof x === "number" && typeof y === "number") {
+      var value = 0 + pow(x, y);
+      if (value >= -9007199254740991 && value <= +9007199254740991) {
+        return value;
+      }
+    }
+    return pow(x, y);
+  };
+  BigInteger.log = function (x, y) {
+    if (typeof x === "number" && typeof y === "number") {
+      var value = 0 + Math.log(x, y);
+      if (value >= -9007199254740991 && value <= +9007199254740991) {
+        return value;
+      }
+    }
+    return log(x, y);
   };
   BigInteger.divide = function (x, y) {
     if (typeof x === "number" && typeof y === "number") {
