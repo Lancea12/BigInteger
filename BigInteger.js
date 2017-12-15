@@ -41,7 +41,7 @@
   };
 
   // count >= 1
-  var pow = function (x, count) {
+/*  var pow = function (x, count) {
     var accumulator = 1;
     var v = x;
     var c = count;
@@ -55,7 +55,7 @@
     }
     return accumulator * v;
   };
-
+*/
   var epsilon = 2 / (9007199254740991 + 1);
   while (1 + epsilon / 2 !== 1) {
     epsilon /= 2;
@@ -337,11 +337,11 @@
 
   BigIntegerInternal.prototype.log = function (b) {
     var a = createBigInteger(this.sign, this.magnitude, this.length, this.value);
-    for(var i = 0; BigInteger.compareTo(a, b) > 0; i++){
-      a = BigInteger.divide(a, b);
+    var comp = 1;
+    for(var i = 0; BigInteger.compareTo(a, comp) > 0; i++){
+      comp = BigInteger.multiply(comp, b);
     }
-    var log = i + Math.log(a, b);
-    return log;
+    return i - 1;
   };
 
   BigIntegerInternal.prototype.divideAndRemainder = function (b, isDivision) {
@@ -402,7 +402,7 @@
     if (shift < 0) {
       shift = 0;
     }
-    var quotient = undefined;
+    var quotient = null;
     var quotientLength = 0;
 
     var i = shift;
